@@ -2,7 +2,7 @@ import React ,{useState} from 'react';
 import {Input, InputGroup} from 'reactstrap';
 import { string, object } from 'yup'; 
 let inputEmail
-const schema = object().shape({
+const schema1 = object().shape({
   password: string().email().required()
 })
 export const getInputEmail =()=>{
@@ -15,19 +15,17 @@ const setInputEmail =(pass)=>{
 const JoshTextFieldComponent = (props) =>{
   const {placeholder, value} = props;
 
-  const [inputStateValue, updateInputValue] = useState(value);
-  const [showError, updateShowError] = useState(false);
+  const [inputStateEmail, updateInputEmail] = useState(value);
+  const [showEmailError, updateShowEmailError] = useState(false);
 
-  const shouldMarkError = (field) => {
-    schema.isValid({
-      password:inputStateValue
+  const shouldEmailMarkError = (field) => {
+    schema1.isValid({
+      password:inputStateEmail
     }).then(function(valid) {
-      updateShowError(!valid)
+      updateShowEmailError(!valid)
     })
   };
 
-JoshTextFieldComponent.getText =() =>{ return inputStateValue
-}
   return (
     <div>
       <InputGroup>
@@ -35,15 +33,15 @@ JoshTextFieldComponent.getText =() =>{ return inputStateValue
           type='text'
           name='username'
           placeholder={placeholder}
-          onChange={(event) =>{updateInputValue(event.target.value)
-            shouldMarkError(inputStateValue)
-            setInputEmail(inputStateValue)
+          onChange={(event) =>{updateInputEmail(event.target.value)
+            shouldEmailMarkError(inputStateEmail)
+            setInputEmail(inputEmail)
           }}
-          value={inputStateValue}
+          value={inputStateEmail}
         />
       </InputGroup>
       <br/>
-      <span className={showError ? "error" : "d-none"}
+      <span className={showEmailError ? "error" : "d-none"}
         >invalid email</span>
     </div>
   );

@@ -13,14 +13,15 @@ import JoshButtonFieldComponent from './component/JoshButtonFieldComponent'
 import JoshLabelFieldComponent from './component/JoshLabelFieldComponent'
 import JoshLinkFieldComponent from './component/JoshLinkFieldComponent'
 */
-import JoshInnersquare from './component/JoshInnersquare'
+//import JoshInnersquare from './component/JoshInnersquare'
 //import LoginExample from './component/LoginExample'
+import Login from './component/LoginUseReducer'
 
 ReactDOM.render(
   <React.StrictMode>
     {/* <App /> */}
     <div>
-      <JoshInnersquare/>
+      <Login/>
     </div>
   </React.StrictMode>,
   document.getElementById('root')

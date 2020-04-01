@@ -15,14 +15,14 @@ const setInputPassword =(pass)=>{
 const JoshPasswordFieldComponent = (props) =>{
   const {placeholder, value} = props;
 
- const [inputStateValue, updateInputValue] = useState(value);
-  const [showError, updateShowError] = useState(false);
+ const [inputStatePassword, updateInputPassword] = useState(value);
+  const [showPasswordError, updateShowPasswordError] = useState(false);
 
-  const shouldMarkError = (field) => {
+  const shouldPasswoedMarkError = (field) => {
     schema.isValid({
-      password:inputStateValue
+      password:inputStatePassword
     }).then(function(valid) {
-      updateShowError(!valid)
+      updateShowPasswordError(!valid)
     })
   };
   return (
@@ -31,15 +31,15 @@ const JoshPasswordFieldComponent = (props) =>{
       <Input
         type='password'
         placeholder={placeholder}
-        onChange={(event) =>{updateInputValue(event.target.value)
-        shouldMarkError(inputStateValue)
-        setInputPassword(inputStateValue)
+        onChange={(event) =>{updateInputPassword(event.target.value)
+          shouldPasswoedMarkError(inputStatePassword)
+        setInputPassword(inputStatePassword)
         }}
-        value={inputStateValue}
+        value={inputStatePassword}
       />
     </InputGroup> 
     <br/>
-    <span className={showError ? "error" : "d-none"}
+    <span className={showPasswordError ? "error" : "d-none"}
       >invalid password</span>
     </div>
   );
