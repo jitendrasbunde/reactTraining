@@ -1,8 +1,8 @@
-import React,{useState,useReducer}from 'react';
+import React,{useState,useReducer,useEffect}from 'react';
 import {Form,Input,InputGroup,Button} from 'reactstrap';
 import JoshLabelFieldComponent from './JoshLabelFieldComponent'
 import JoshLinkFieldComponent from './JoshLinkFieldComponent'
-import { string, object } from 'yup'; 
+import { string, object} from 'yup'; 
 import reducer from './Reducers/LoginReducer'
 import { setDetails } from './Reducers/LoginAction'
 
@@ -21,6 +21,9 @@ const JoshLoginUseReducer = (props) =>{
   const {placeholder, value} = props;
   const [state, dispatch] = useReducer(reducer, initialState);
   const [inputStatePassword, updateInputPassword] = useState(value);
+  const [isLoading, setIsLoading] = useState(false);
+  const [tokenData, setToken] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   const [showPasswordError, updateShowPasswordError] = useState(false);
   const [inputStateEmail, updateInputEmail] = useState(value);
   const [showEmailError, updateShowEmailError] = useState(false);
@@ -33,7 +36,9 @@ const JoshLoginUseReducer = (props) =>{
     })
   };
 
-
+  useEffect(()=>{
+    console.log("Loading the page  "+isLoading)
+  })
 
 
   const shouldPasswoedMarkError = (field) => {
@@ -45,9 +50,13 @@ const JoshLoginUseReducer = (props) =>{
   };
 
 
-  const checkValidation = (event) =>{
+  const handleOnSubmit = (event) =>{
     event.preventDefault()
+    setIsLoading(true);
     console.log("in submit");
+    debugger
+    const formdata = new FormData(event.target)
+    console.log(formdata)
     let schema = object().shape({
     email: string().email().required(),
     password: string().required()
@@ -57,8 +66,36 @@ const JoshLoginUseReducer = (props) =>{
       password :state.password
   })
   .then(function(valid) {
+
     if(valid){
-      alert("Valid Information")
+      
+      try{
+        fetch("https://reqres.in/api/login",{
+          method:"POST",
+          credentials:"same-origin",
+          headers:new Headers({
+            "Content-Type":"application/json"
+          }),
+          body:JSON.stringify({
+            email:formdata.get("email") ,
+            password:formdata.get("password")
+          })
+        }
+        ).then(response=>{
+          console.log("Row Response  ",response);
+          return response.json();
+        }).then(jsonresponse=>{
+          console.log("JSON RESPONSE:->  ",jsonresponse);
+          setIsLoading(false);
+          if(jsonresponse.token){
+            setToken(jsonresponse.token)     
+          }else{
+            setErrorMsg(jsonresponse.message);
+          }
+        })
+      }catch(ex){
+
+      }
     }else{
       alert("Please give in right format")
     }
@@ -72,13 +109,25 @@ const handleOnChange = e => {
   dispatch(setDetails(updatedValues));
 };
 
+  if(tokenData!=="")
+  {
+    debugger
+    return(
+    <h3 style={{display: "grid",justifyContent:"center",alignContent:"center"}} >${tokenData}</h3>
+    )
+  }else if(errorMsg!==""){
+    return(
+      <h3 style={{display: "grid",justifyContent:"center",alignContent:"center"}} >${errorMsg}</h3>
+      )
+  }
+
   return (
     <div className="container">
       <div className="row" style={{height:180}}></div>
       <div className="row" style={{height:200}}>
         <div className="col-4"></div>
         <div className="col-4">
-        <Form onSubmit={checkValidation}>
+        <Form onSubmit={handleOnSubmit} id="my-form">
         <JoshLabelFieldComponent/>
         <br></br>  
         <div>
