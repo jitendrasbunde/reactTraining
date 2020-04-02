@@ -3,8 +3,8 @@ import {Form,Input,InputGroup,Button} from 'reactstrap';
 import JoshLabelFieldComponent from './JoshLabelFieldComponent'
 import JoshLinkFieldComponent from './JoshLinkFieldComponent'
 import { string, object } from 'yup'; 
-import loginReducer from './Reducers/LoginReducer'
-import { setUserDetails } from './Reducers/LoginAction'
+import reducer from './Reducers/LoginReducer'
+import { setDetails } from './Reducers/LoginAction'
 
 const schema2 = object().shape({
   password: string().required()
@@ -19,7 +19,7 @@ const initialState={
 
 const JoshLoginUseReducer = (props) =>{
   const {placeholder, value} = props;
-  const [state, dispatch] = useReducer(loginReducer, initialState);
+  const [state, dispatch] = useReducer(reducer, initialState);
   const [inputStatePassword, updateInputPassword] = useState(value);
   const [showPasswordError, updateShowPasswordError] = useState(false);
   const [inputStateEmail, updateInputEmail] = useState(value);
@@ -57,6 +57,11 @@ const JoshLoginUseReducer = (props) =>{
       password :state.password
   })
   .then(function(valid) {
+    if(valid){
+      alert("Valid Information")
+    }else{
+      alert("Please give in right format")
+    }
     console.log(state.email+"  "+state.password+"  "+valid);
   });
 }
@@ -64,7 +69,7 @@ const handleOnChange = e => {
   const { value, name } = e.target;
   let updatedValues = { ...state };
   updatedValues[name] = value;
-  dispatch(setUserDetails(updatedValues));
+  dispatch(setDetails(updatedValues));
 };
 
   return (

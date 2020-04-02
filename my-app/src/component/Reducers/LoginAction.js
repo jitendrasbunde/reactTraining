@@ -1,8 +1,8 @@
 const loginActions = {
-  setUserDetails: "SET_USER_DETAILS"
+  setUserDetails: "SET_DETAILS"
 };
 
-export const setUserDetails = param => {
+export const setDetails = param => {
   return {
     type: loginActions.setUserDetails,
     payload: param
