@@ -1,9 +1,11 @@
 import React from 'react';
 
+
 const JoshLinkFieldComponent = (props) =>{
+
   return (
-      <a
-        href='www.google.com'
+    <a
+        href='http://www.google.com'
       >Forget Password</a>
   );
 };
